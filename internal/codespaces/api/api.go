@@ -648,6 +648,7 @@ func (a *API) AuthorizedKeys(ctx context.Context, user string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	req.SetBasicAuth("monalisa", "b1437dc4c83e7156")
 	resp, err := a.do(ctx, req, "/user.keys")
 	if err != nil {
 		return nil, err
