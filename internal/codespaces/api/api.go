@@ -32,6 +32,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -642,6 +643,7 @@ func (a *API) GetCodespaceRepositoryContents(ctx context.Context, codespace *Cod
 // format) registered by the specified GitHub user.
 func (a *API) AuthorizedKeys(ctx context.Context, user string) ([]byte, error) {
 	url := fmt.Sprintf("%s/%s.keys", a.githubServer, user)
+	fmt.Println("URL SON", url)
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
@@ -653,7 +655,8 @@ func (a *API) AuthorizedKeys(ctx context.Context, user string) ([]byte, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("server returned %s", resp.Status)
+		body, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("server returned %s - %s", resp.Status, body)
 	}
 
 	b, err := ioutil.ReadAll(resp.Body)
