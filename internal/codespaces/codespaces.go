@@ -11,6 +11,7 @@ import (
 )
 
 func connectionReady(codespace *api.Codespace) bool {
+	fmt.Printf("\n%+v\n\n", codespace.Connection)
 	return codespace.Connection.SessionID != "" &&
 		codespace.Connection.SessionToken != "" &&
 		codespace.Connection.RelayEndpoint != "" &&
